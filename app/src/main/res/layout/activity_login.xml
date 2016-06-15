@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/ubg1">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="130dp"
+        android:orientation="vertical"
+        android:background="#BDFFFFFF">
+
+        <ImageView
+            android:layout_width="250dp"
+            android:layout_height="142dp"
+            android:layout_marginBottom="50dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/logo"/>
+
+        <LinearLayout
+            android:id="@+id/login_form"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+            android:layout_marginBottom="15dp"
+            android:orientation="vertical">
+
+
+            <EditText
+                android:id="@+id/username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:inputType="textPersonName"
+                android:hint="Username"/>
+
+            <EditText
+                android:id="@+id/password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:inputType="textPassword"
+                android:hint="Password"/>
+
+            <CheckBox
+                android:id="@+id/remember_me"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:text="Remember me"/>
+
+            <Button
+                style="@style/DarkBox"
+                android:id="@+id/login"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="login"
+                android:text="Login"
+                android:layout_gravity="center_horizontal"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sign_up"
+            android:onClick="signup"
+            android:layout_gravity="center_horizontal|bottom"/>
+
+
+    </LinearLayout>
+
+
+
+</RelativeLayout>

@@ -1,0 +1,22 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_course_list"
+            android:icon="@drawable/list"
+            android:title="Course List"
+            android:checked="true"/>
+        <item
+            android:id="@+id/nav_view_term"
+            android:icon="@drawable/term"
+            android:title="Current Term" />
+        <item
+            android:id="@+id/nav_manage_courses"
+            android:icon="@drawable/manage"
+            android:title="Manage Courses" />
+        <item
+            android:id="@+id/nav_browse_courses"
+            android:icon="@drawable/explore"
+            android:title="Browse Courses" />
+    </group>
+</menu>
