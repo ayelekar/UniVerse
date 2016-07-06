@@ -23,7 +23,6 @@ public class BaseActivity extends AppCompatActivity {
 
     private NavigationView drawerContainer;
     private DrawerLayout drawerLayout;
-    //private ListView drawerList;
     private ActionBarDrawerToggle mDrawerToggle;
 
     @Override
@@ -31,11 +30,11 @@ public class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
 
+        //Manages fragments
         mFragmentManager = getSupportFragmentManager();
 
         drawerContainer = (NavigationView) findViewById(R.id.drawer_container);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-       // drawerList = (ListView) findViewById(R.id.left_drawer);
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.home_toolbar);
         setSupportActionBar(myToolbar);
@@ -148,8 +147,6 @@ public class BaseActivity extends AppCompatActivity {
                 // Insert the fragment by replacing any existing fragment
                 mFragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
 
-                // Highlight the selected item has been done by NavigationView
-                menuItem.setChecked(true);
                 // Set action bar title
                 setTitle(menuItem.getTitle());
                 // Close the navigation drawer

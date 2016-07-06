@@ -22,24 +22,39 @@
 
         <!-- The main content view where fragments are loaded -->
 
-            <FrameLayout
-                android:id="@+id/flContent"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+        <FrameLayout
+            android:id="@+id/flContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
 
     </LinearLayout>
 
     <!-- The navigation drawer that comes from the left -->
     <!-- Note that `android:layout_gravity` needs to be set to 'start' -->
-    <android.support.design.widget.NavigationView
-        android:id="@+id/drawer_container"
+    <LinearLayout
         android:layout_width="240dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:choiceMode="singleChoice"
-        android:background="#CCC"
-        app:menu="@menu/drawer_view" />
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="#333333"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:text="Navigation"
+            android:gravity="center_vertical"
+            android:padding="10dp"/>
+
+        <android.support.design.widget.NavigationView
+            android:id="@+id/drawer_container"
+            android:layout_width="240dp"
+            android:layout_height="match_parent"
+            android:choiceMode="singleChoice"
+            android:background="#CCC"
+            app:menu="@menu/drawer_view" />
+    </LinearLayout>
 
     <!-- The navigation drawer -->
     <!--LinearLayout

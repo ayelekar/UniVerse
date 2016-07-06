@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
@@ -11,6 +12,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -55,11 +57,6 @@ public class BrowseCourses extends Fragment {
     ListView resultsView;
     Button searchButton;
 
-    private LinearLayout drawerContainer;
-    private DrawerLayout drawerLayout;
-    private ListView drawerList;
-    private ActionBarDrawerToggle mDrawerToggle;
-
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.activity_browse_courses, container, false);
@@ -76,7 +73,6 @@ public class BrowseCourses extends Fragment {
             }
         });
 
-
         return v;
     }
 
@@ -91,10 +87,12 @@ public class BrowseCourses extends Fragment {
         getAllCourses();
     }
 
+    //Call the AsyncTask to fecth all courses
     private void getAllCourses() {
         callRequest("http://www.rdlin.com/universe/courses/all");
     }
 
+    //Parse the result from the HTTP call into a JSON object
     private void parseCourses(JSONArray result) {
         for (int i=0; i<result.length(); i++) {
             try {
@@ -115,6 +113,7 @@ public class BrowseCourses extends Fragment {
         }
     }
 
+    //Redraw the list of courses
     public void updateView() {
         ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(
                 getActivity(), android.R.layout.simple_spinner_item, subjects.toArray(new String[subjects.size()]));
@@ -123,6 +122,7 @@ public class BrowseCourses extends Fragment {
         subjectSpinner.invalidate();
     }
 
+    //Call the search and execute the HTTP request
     public void search() {
         String subject = subjectSpinner.getSelectedItem().toString();
         String code = catalogField.getText().toString();
@@ -132,6 +132,7 @@ public class BrowseCourses extends Fragment {
         new SearchQuery().execute(params);
     }
 
+    //Launch the course details activity when clicked
     private class ResultsItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView parent, View view, int position, long id) {
@@ -145,6 +146,7 @@ public class BrowseCourses extends Fragment {
         }
     }
 
+    //Parse the course result and create the list of course objects in another thread
     private class SearchQuery extends AsyncTask<String, Void, ArrayList<Course>> {
 
         private ProgressDialog dialog = new ProgressDialog(getActivity());
@@ -154,6 +156,7 @@ public class BrowseCourses extends Fragment {
             this.dialog.show();
         }
 
+        //Check to see if the courses match the query
         @Override
         protected ArrayList<Course> doInBackground(String... params) {
             ArrayList<Course> result = new ArrayList<Course>();
@@ -168,6 +171,7 @@ public class BrowseCourses extends Fragment {
             return result;
         }
 
+        //Update the list to show the new results
         @Override
         protected void onPostExecute(ArrayList<Course> result) {
             if (dialog.isShowing()) {
@@ -296,25 +300,215 @@ public class BrowseCourses extends Fragment {
 
         String[] terms = getResources().getStringArray(R.array.term_array);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_spinner_item,
-                Arrays.copyOfRange(terms, 0, UserAccount.getInstance().termNumber));
+                android.R.layout.simple_spinner_item, terms);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         dialogTermSpinner.setAdapter(adapter);
-
-
 
         Button dialogButton = (Button) dialog.findViewById(R.id.dialog_add_button);
         // if button is clicked, close the custom dialog
         dialogButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UserAccount.getInstance().coursesTaken.get(
-                        dialogTermSpinner.getSelectedItemPosition()).add(course);
-                UserAccount.getInstance().writeToFile(getActivity());
+                verifyCourse(course, dialogTermSpinner.getSelectedItemPosition());
                 dialog.dismiss();
             }
         });
 
         dialog.show();
+    }
+
+    public int verifyCourse(Course course, int termNum) {
+        String preReqUrl = "http://www.rdlin.com/universe/courses/info/meets_reqs/" + course.subject +
+                "/" + course.catalog + "?previous_courses=";
+        String antiReqUrl = "http://www.rdlin.com/universe/courses/info/meets_antireqs/" + course.subject +
+                "/" + course.catalog + "?courses=";
+        String coReqUrl = "http://www.rdlin.com/universe/courses/info/meets_reqs/" + course.subject +
+                "/" + course.catalog + "?previous_courses=";
+        for (int i=0; i<UserAccount.getInstance().coursesTaken.size(); i++) {
+            for (int j=0; j<UserAccount.getInstance().coursesTaken.get(i).size(); j++) {
+                Course c = UserAccount.getInstance().coursesTaken.get(i).get(j);
+                if (i < termNum) {
+                    preReqUrl += c.subject + c.catalog + ",";
+                    coReqUrl += c.subject + c.catalog + ",";
+                }
+                if (i == termNum) {
+                    coReqUrl += c.subject + c.catalog + ",";
+                }
+                antiReqUrl += c.subject + c.catalog + ",";
+            }
+        }
+
+        if (preReqUrl.endsWith(",")) {
+            preReqUrl = preReqUrl.substring(0, preReqUrl.length() - 1);
+        }
+        if (antiReqUrl.endsWith(",")) {
+            antiReqUrl = antiReqUrl.substring(0, antiReqUrl.length() - 1);
+        }
+        if (coReqUrl.endsWith(",")) {
+            coReqUrl = coReqUrl.substring(0, coReqUrl.length() - 1);
+        }
+
+        System.out.println(preReqUrl);
+        System.out.println(antiReqUrl);
+        System.out.println(coReqUrl);
+
+        Object[] params = {preReqUrl,antiReqUrl, coReqUrl, course, termNum};
+
+        new CourseCheck().execute(params);
+
+
+        return 0;
+    }
+
+    private class CourseCheck extends AsyncTask<Object, Void, Object[]> {
+
+        private ProgressDialog dialog = new ProgressDialog(getActivity());
+        @Override
+        protected void onPreExecute() {
+            this.dialog.setMessage("Adding course");
+            this.dialog.show();
+        }
+
+        @Override
+        protected Object[] doInBackground(Object... params) {
+            StringBuilder sb = new StringBuilder();
+            StringBuilder sb2 = new StringBuilder();
+            StringBuilder sb3 = new StringBuilder();
+            boolean prereq = true;
+            boolean coreq = true;
+            boolean antireq = true;
+
+            try {
+                URL url = new URL((String)params[0]);
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+
+                String line = "";
+                BufferedReader br = new BufferedReader(new InputStreamReader(in));
+                while ((line = br.readLine()) != null) {
+                    sb.append(line);
+                }
+                System.out.println(sb.toString());
+                JSONObject ob = new JSONObject(sb.toString());
+                System.out.println("OUTPUT: " + sb.toString());
+                if (ob.getString("result").equals("True")) {
+                    prereq = true;
+                } else {
+                    prereq = false;
+                }
+
+
+                URL url2 = new URL((String)params[1]);
+                HttpURLConnection urlConnection2 = (HttpURLConnection) url2.openConnection();
+                InputStream in2 = new BufferedInputStream(urlConnection2.getInputStream());
+
+                line = "";
+                BufferedReader br2 = new BufferedReader(new InputStreamReader(in2));
+                while ((line = br2.readLine()) != null) {
+                    sb2.append(line);
+                }
+                ob = new JSONObject(sb2.toString());
+                if (ob.getString("result").equals("True")) {
+                    antireq = true;
+                } else {
+                    antireq = false;
+                }
+
+
+                URL url3 = new URL((String)params[2]);
+                HttpURLConnection urlConnection3 = (HttpURLConnection) url3.openConnection();
+                InputStream in3 = new BufferedInputStream(urlConnection3.getInputStream());
+
+                line = "";
+                BufferedReader br3 = new BufferedReader(new InputStreamReader(in3));
+                while ((line = br3.readLine()) != null) {
+                    sb3.append(line);
+                }
+                ob = new JSONObject(sb3.toString());
+                if (ob.getString("result").equals("True")) {
+                    coreq = true;
+                } else {
+                    coreq = false;
+                }
+
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+            Integer valid = 0;
+            if (!prereq) {
+                valid = 1;
+            } else if (antireq) {
+                valid = 2;
+            } else if (!coreq) {
+                valid = 3;
+            }
+            System.out.println("VALID: " + valid);
+            Object[] res = {params[3], params[4], valid};
+            return res;
+        }
+
+        @Override
+        protected void onPostExecute(Object[] result) {
+            final Course course = (Course)result[0];
+            Integer success = (Integer)result[2];
+            if (dialog.isShowing()) {
+                dialog.dismiss();
+            }
+
+            for (int i=0; i<UserAccount.getInstance().coursesTaken.size(); i++) {
+                for (int j=0; j<UserAccount.getInstance().coursesTaken.get(i).size(); j++) {
+                    if (course.subject.equals(UserAccount.getInstance().coursesTaken.get(i).get(j).subject) &&
+                            course.catalog.equals(UserAccount.getInstance().coursesTaken.get(i).get(j).catalog)) {
+                        success = 4;
+                    }
+                }
+            }
+
+            int termNum = (Integer)result[1];
+            if (success == 0) {
+                UserAccount.getInstance().coursesTaken.get(termNum).add(course);
+                UserAccount.getInstance().writeToFile(getActivity());
+                dialog.dismiss();
+            } else {
+                AlertDialog.Builder addErrorDialog = new AlertDialog.Builder(getActivity());
+                addErrorDialog.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                addErrorDialog.setPositiveButton("Course Details", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent i = new Intent(getActivity(), CourseDetails.class);
+                        i.putExtra("COURSE_SUBJECT", course.subject);
+                        i.putExtra("COURSE_CATALOG", course.catalog);
+                        startActivity(i);
+                        dialog.dismiss();
+                    }
+                });
+                System.out.println("SUCCESS: " + success);
+                if (success == 1){
+                    addErrorDialog.setMessage("Could not add " + course.subject+course.catalog +
+                            " because you do not meet the pre-requisites. See course details for " +
+                            "more information.");
+
+                } else if (success == 2){
+                    addErrorDialog.setMessage("Could not add " + course.subject+course.catalog +
+                            " because you do not meet the anti-requisites. See course details for " +
+                            "more information.");
+                } else if (success == 3){
+                    addErrorDialog.setMessage("Could not add " + course.subject+course.catalog +
+                            " because you do not meet the co-requisites. See course details for " +
+                            "more information.");
+                } else {
+                    addErrorDialog.setMessage("Could not add " + course.subject+course.catalog +
+                            " because it has already been added.");
+                }
+                addErrorDialog.show();
+            }
+
+        }
+
     }
 }

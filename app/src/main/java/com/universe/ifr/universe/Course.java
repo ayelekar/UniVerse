@@ -2,9 +2,7 @@ package com.universe.ifr.universe;
 
 import java.io.Serializable;
 
-/**
- * Created by Asim on 6/13/2016.
- */
+//Course object that holds the course information
 public class Course implements Serializable {
     int id;
     String subject;
@@ -21,6 +19,7 @@ public class Course implements Serializable {
         validate();
     }
 
+    //check to see if the object is valid
     private void validate() {
         if (subject == null || catalog == null || title == null) {
             valid = false;

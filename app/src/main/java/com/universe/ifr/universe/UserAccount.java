@@ -21,42 +21,34 @@ public class UserAccount implements Serializable {
     public String term;
     public int termNumber;
     public String faculty;
+    public int facultyNumber;
     public String program;
+    public int programNumber;
 
     public boolean validAccount;
 
     ArrayList<ArrayList<Course>> coursesTaken;
 
+    //Private constructor for the singleton class
     private static UserAccount ourInstance = new UserAccount();
-
+    //Get the instance
     public static UserAccount getInstance() {
         return ourInstance;
     }
 
     private UserAccount() {
-        term = "1A";
-        termNumber = 1;
-        faculty = "";
-        program = "";
-        coursesTaken = new ArrayList<ArrayList<Course>>();
-        coursesTaken.add(new ArrayList<Course>());
+        coursesTaken = new ArrayList<>();
+        reset();
     }
 
+    //Set term related details
     public void setTerm(String termName, int termNum) {
-        if (termNum < termNumber) {
-            for (int i=termNumber-1; i>=termNum; i--) {
-                coursesTaken.remove(i);
-            }
-        } else {
-            for (int i=0; i<(termNum - termNumber); i++) {
-                coursesTaken.add(new ArrayList<Course>());
-            }
-        }
         term = termName;
         termNumber = termNum;
         validAccount = true;
     }
 
+    //Reset the singleton if logged out
     public void reset() {
         username = null;
         email = null;
@@ -64,14 +56,19 @@ public class UserAccount implements Serializable {
         term = "1A";
         termNumber = 1;
         faculty = "";
+        facultyNumber = 1;
         program = "";
+        programNumber = 1;
         validAccount = false;
         coursesTaken.clear();
-        coursesTaken.add(new ArrayList<Course>());
+        for (int i=0; i<10; i++) {
+            coursesTaken.add(new ArrayList<Course>());
+        }
     }
 
+    //Write the data to the file so it can be retrieved
     public void writeToFile(Context c) {
-        String FILENAME = UserAccount.getInstance().username + "_data";
+        String FILENAME = username + "_data";
         try {
             FileOutputStream fos = c.openFileOutput(FILENAME, Context.MODE_PRIVATE);
             ObjectOutputStream os = new ObjectOutputStream(fos);
@@ -84,6 +81,7 @@ public class UserAccount implements Serializable {
 
     }
 
+    //Load data from file
     public void loadData(Context c, String user) {
         try {
             FileInputStream fis = c.openFileInput(user + "_data");

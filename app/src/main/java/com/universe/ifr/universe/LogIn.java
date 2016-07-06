@@ -33,11 +33,11 @@ public class LogIn extends Activity {
         password = (EditText) findViewById(R.id.password);
         remember = (CheckBox) findViewById(R.id.remember_me);
 
-        // Restore preferences
+        // Restore preferences from the prefs file
         settings = getSharedPreferences(PREFS_FILE, 0);
         boolean rememberMe = settings.getBoolean("remember_me", false);
-        System.out.println("REMEMBER: " + rememberMe);
         remember.setChecked(rememberMe);
+        //remember me boolean checks to see if the checkbox is checked
         if(rememberMe) {
             username.setText(settings.getString("username", ""));
             password.setText(settings.getString("password", ""));
@@ -45,6 +45,7 @@ public class LogIn extends Activity {
 
         UserAccount.getInstance().reset();
 
+        //if the user does not exist or password is wrong
         error = new TextView(this);
         error.setText("Incorrect username or password. Try again.");
         error.setTextSize(10);
@@ -52,12 +53,14 @@ public class LogIn extends Activity {
         error.setTextColor(Color.RED);
     }
 
+    //reset the data in the user account if logged out
     @Override
     protected void onResume() {
         UserAccount.getInstance().reset();
         super.onResume();
     }
 
+    //Directly accessed from the layout onlick function
     public void login(View view) {
         String user = "";
         String pass = "";
@@ -65,15 +68,17 @@ public class LogIn extends Activity {
         user = username.getText().toString();
         pass = password.getText().toString();
 
+        //edit the preferences file
         SharedPreferences.Editor editor = settings.edit();
         if (remember.isChecked()) {
             System.out.println("REMEMBER");
-
+            //put in the username and password if the remember checkbox is checked
             editor.putBoolean("remember_me", true);
             editor.putString("username", user);
             editor.putString("password", pass);
             editor.commit();
         } else {
+            //else remove the fields
             System.out.println("FORGET");
             editor.putBoolean("remember_me", false);
             editor.remove("username");
@@ -81,8 +86,10 @@ public class LogIn extends Activity {
             editor.commit();
         }
 
+        //load the user data and check the username and password against it
         UserAccount.getInstance().loadData(this, user);
 
+        //Check if the account is valid, if not, fail login
         if (UserAccount.getInstance().validAccount) {
             if (pass.equals(UserAccount.getInstance().password)) {
                 loginForm.removeView(error);
@@ -102,7 +109,7 @@ public class LogIn extends Activity {
         }
 
     }
-
+    //Go to the signup page
     public void signup(View view) {
         Intent i = new Intent(this, SignUp.class);
         startActivity(i);

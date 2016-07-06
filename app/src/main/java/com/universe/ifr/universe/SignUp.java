@@ -24,7 +24,7 @@ public class SignUp extends AppCompatActivity {
         email = (EditText) findViewById(R.id.email);
         password = (EditText) findViewById(R.id.password);
     }
-
+    //Submit the entered information to the user account
     public void submit(View view) {
         UserAccount.getInstance().username = username.getText().toString();
         UserAccount.getInstance().email = email.getText().toString();

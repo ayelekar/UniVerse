@@ -8,7 +8,7 @@ import android.os.Handler;
 
 public class Splash extends Activity {
 
-    // Splash screen timer
+    // Splash screen timer (1 second)
     private static int SPLASH_TIME_OUT = 1000;
 
     @Override
@@ -38,32 +38,4 @@ public class Splash extends Activity {
        // new PrefetchData().execute();
     }
 
-    private class PrefetchData extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            // before making http calls
-        }
-
-        @Override
-        protected Void doInBackground(Void... arg0) {
-
-
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-            // After completing http call
-            // will close this activity and lauch main activity
-            Intent i = new Intent(Splash.this, LogIn.class);
-            startActivity(i);
-            // close this activity
-            finish();
-        }
-
-    }
 }

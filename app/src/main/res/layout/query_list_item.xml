@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Definig a container for you List Item-->
 <RelativeLayout
+    android:id="@+id/list_item"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:padding="10dp"

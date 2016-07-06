@@ -29,6 +29,120 @@
         <item>5B</item>
     </string-array>
 
+    <string-array name="faculty_array">
+        <item>None</item>
+        <item>Applied Health Sciences</item>
+        <item>Arts</item>
+        <item>Engineering</item>
+        <item>Environment</item>
+        <item>Mathematics</item>
+        <item>Science</item>
+    </string-array>
+
+    <string-array name="program_array">
+        <item>None</item>
+        <item>Health Sciences</item>
+        <item>Kinesiology</item>
+        <item>Public Health</item>
+        <item>Recreation and Leisure Studies</item>
+        <item>Recreation and Sport Business\n</item>
+        <item>Therapeutic Recreation</item>
+        <item>Tourism Development</item>
+        <item>Accounting and Financial Management</item>
+        <item>Anthropology</item>
+        <item>Classical Studies</item>
+        <item>Computing and Financial Management</item>
+        <item>Economics</item>
+        <item>English</item>
+        <item>Fine Arts</item>
+        <item>French</item>
+        <item>German</item>
+        <item>Global Business and Digital Arts</item>
+        <item>History</item>
+        <item>Honours Arts</item>
+        <item>Honours Arts and Business</item>
+        <item>Legal Studies</item>
+        <item>Liberal Studies</item>
+        <item>Medieval Studies</item>
+        <item>Music</item>
+        <item>Peace and Conflict Studies</item>
+        <item>Philosophy</item>
+        <item>Political Science</item>
+        <item>Psychology</item>
+        <item>Religious Studies</item>
+        <item>Russian and East European Studies</item>
+        <item>Sexuality, Marriage, and Family Studies</item>
+        <item>Social Development Studies</item>
+        <item>Sociology</item>
+        <item>Spanish</item>
+        <item>Speech Communication</item>
+        <item>Theatre and Performance</item>
+        <item>Women\'s Studies</item>
+        <item>Architecture</item>
+        <item>Biomedical Engineering</item>
+        <item>Chemical Engineering</item>
+        <item>Civil Engineering</item>
+        <item>Electrical Engineering</item>
+        <item>Environmental Engineering</item>
+        <item>Geological Engineering</item>
+        <item>Management Engineering</item>
+        <item>Mechanical Engineering</item>
+        <item>Mechatronics Engineering</item>
+        <item>Nanotechnology Engineering</item>
+        <item>Software Engineering</item>
+        <item>Systems Design Engineering</item>
+        <item>Environment and Business</item>
+        <item>Environment and Resource Studies</item>
+        <item>Geography and Aviation</item>
+        <item>Geography and Environmental Management</item>
+        <item>Geomatics</item>
+        <item>International Development</item>
+        <item>Knowledge Integration</item>
+        <item>Planning</item>
+        <item>Actuarial Science</item>
+        <item>Applied Mathematics</item>
+        <item>BBA (Laurier) CS (Waterloo) Double Degree</item>
+        <item>BBA (Laurier) Math (Waterloo) Double Degree</item>
+        <item>Combinatorics and Optimization</item>
+        <item>Computational Mathematics</item>
+        <item>Computer Science</item>
+        <item>Computing and Financial Management</item>
+        <item>Information Technology Management</item>
+        <item>Mathematical Economics</item>
+        <item>Mathematical Finance</item>
+        <item>Mathematical Optimization</item>
+        <item>Mathematical Physics</item>
+        <item>Mathematics</item>
+        <item>Mathematics/Business Administration</item>
+        <item>Mathematics/Chartered Professional Accounting</item>
+        <item>Mathematics/Financial Analysis and Risk Management</item>
+        <item>Mathematics Teaching</item>
+        <item>Pure Mathematics</item>
+        <item>Software Engineering</item>
+        <item>Statistics</item>
+        <item>Statistics for Health</item>
+        <item>Science and Business</item>
+        <item>Science and Aviation</item>
+        <item>Psychology</item>
+        <item>Physics and Astronomy</item>
+        <item>Physics</item>
+        <item>Physical Sciences</item>
+        <item>Medicinal Chemistry</item>
+        <item>Mathematical Physics</item>
+        <item>Materials and Nanosciences</item>
+        <item>Life Sciences</item>
+        <item>Life Physics</item>
+        <item>Honours Science</item>
+        <item>Environmental Science</item>
+        <item>Earth Sciences</item>
+        <item>Chemistry</item>
+        <item>Biotechnology/Economics</item>
+        <item>Biotechnology/Chartered Professional Accounting</item>
+        <item>Biomedical Sciences</item>
+        <item>Biology</item>
+        <item>Biochemistry</item>
+    </string-array>
+
     <string-array name="nav_items">
         <item>Course List</item>
         <item>Current Term</item>
