@@ -6,20 +6,12 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -45,7 +37,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class BrowseCourses extends Fragment {
 
@@ -56,7 +47,8 @@ public class BrowseCourses extends Fragment {
     EditText catalogField;
     ListView resultsView;
     Button searchButton;
-
+    TextView resultLabel;
+    LinearLayout resultLayout;
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.activity_browse_courses, container, false);
@@ -66,13 +58,16 @@ public class BrowseCourses extends Fragment {
         searchButton = (Button) v.findViewById(R.id.search_button);
         resultsView = (ListView) v.findViewById(R.id.result_list);
         resultsView.setOnItemClickListener(new ResultsItemClickListener());
+        resultLabel = (TextView) v.findViewById(R.id.result_label);
+        resultLayout = (LinearLayout) v.findViewById(R.id.result_cont);
+
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 search();
+                showview();
             }
         });
-
         return v;
     }
 
@@ -94,7 +89,7 @@ public class BrowseCourses extends Fragment {
 
     //Parse the result from the HTTP call into a JSON object
     private void parseCourses(JSONArray result) {
-        for (int i=0; i<result.length(); i++) {
+        for (int i = 0; i < result.length(); i++) {
             try {
                 JSONObject jObject = result.getJSONObject(i);
                 Course course = new Course(jObject.getInt("course_id"),
@@ -117,7 +112,7 @@ public class BrowseCourses extends Fragment {
     public void updateView() {
         ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(
                 getActivity(), android.R.layout.simple_spinner_item, subjects.toArray(new String[subjects.size()]));
-        spinnerArrayAdapter.setDropDownViewResource( android.R.layout.simple_spinner_dropdown_item );
+        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         subjectSpinner.setAdapter(spinnerArrayAdapter);
         subjectSpinner.invalidate();
     }
@@ -127,9 +122,15 @@ public class BrowseCourses extends Fragment {
         String subject = subjectSpinner.getSelectedItem().toString();
         String code = catalogField.getText().toString();
         String[] params = {subject, code};
-        InputMethodManager inputMethodManager = (InputMethodManager)  getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+        InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
         new SearchQuery().execute(params);
+    }
+
+    public void showview() {
+
+        resultLabel.setVisibility(View.VISIBLE);
+        resultLayout.setVisibility(View.VISIBLE);
     }
 
     //Launch the course details activity when clicked
