@@ -28,7 +28,7 @@
                 style="@style/LabelText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="7dp"
                 android:layout_marginBottom="5dp"
                 android:text="Program Information"/>
 
@@ -58,9 +58,12 @@
                         android:layout_width="wrap_content"
                         android:maxWidth="150dp"
                         android:minWidth="100dp"
+                        android:textAlignment="gravity"
+                        android:gravity="center"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_alignParentRight="true" />
+                        android:layout_alignParentRight="true"
+                        android:dropDownSelector="#7c7c7c" />
 
                 </RelativeLayout>
 
@@ -97,7 +100,7 @@
                 style="@style/LabelText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="7dp"
                 android:layout_marginBottom="5dp"
                 android:text="User Account Settings"/>
 
@@ -205,7 +208,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="logout"
-                android:text="Logout" />
+                android:text="Logout"
+                android:layout_marginTop="25dp"/>
 
         </LinearLayout>
 
