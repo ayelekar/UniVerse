@@ -78,7 +78,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="login"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="45dp"
                 android:text="Login"
                 android:layout_gravity="center_horizontal"/>
         </LinearLayout>
