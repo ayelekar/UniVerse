@@ -7,14 +7,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="130dp"
+        android:paddingTop="95dp"
         android:orientation="vertical"
         android:background="#BDFFFFFF">
 
         <ImageView
             android:layout_width="250dp"
             android:layout_height="142dp"
-            android:layout_marginBottom="50dp"
+            android:layout_marginBottom="55dp"
             android:layout_gravity="center_horizontal"
             android:src="@drawable/logo"/>
 
@@ -41,16 +41,36 @@
                 android:id="@+id/password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="-16dp"
                 android:inputType="textPassword"
                 android:hint="Password"/>
 
-            <CheckBox
-                android:id="@+id/remember_me"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:text="Remember me"/>
+                android:layout_gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/remember_me"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:layout_marginBottom="5dp"
+                    android:text="Remember me"
+                    android:textColor="#000000"
+                    android:textStyle="normal" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/sign_up"
+                    android:onClick="signup"
+                    android:layout_marginLeft="142dp"
+                    android:textStyle="normal"
+                    android:textColor="#000000"
+                    android:typeface="normal" />
+
+            </LinearLayout>
 
             <Button
                 style="@style/DarkBox"
@@ -58,17 +78,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="login"
-                android:layout_marginBottom="10dp"
+                android:layout_marginTop="25dp"
                 android:text="Login"
                 android:layout_gravity="center_horizontal"/>
         </LinearLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/sign_up"
-            android:onClick="signup"
-            android:layout_gravity="center_horizontal|bottom"/>
+
 
 
     </LinearLayout>
