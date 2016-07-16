@@ -127,8 +127,8 @@ public class BaseActivity extends AppCompatActivity {
                 case R.id.nav_view_term:
                 //    fragmentClass = SecondFragment.class;
                     break;
-                case R.id.nav_manage_courses:
-                 //   fragmentClass = ThirdFragment.class;
+                case R.id.nav_manage_program:
+                    fragmentClass = ProgramReqs.class;
                     break;
                 case R.id.nav_browse_courses:
                     fragmentClass = BrowseCourses.class;

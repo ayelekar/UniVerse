@@ -16,7 +16,7 @@
 
     <group android:id="@+id/grp3" android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_manage_courses"
+            android:id="@+id/nav_manage_program"
             android:icon="@drawable/manage"
             android:title="Manage Courses" />
     </group>
